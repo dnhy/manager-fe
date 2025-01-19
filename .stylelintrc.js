@@ -15,6 +15,7 @@ module.exports = {
     },
   ],
   rules: {
+    "at-rule-no-unknown": null,
     "no-empty-source": null,
   },
 };
