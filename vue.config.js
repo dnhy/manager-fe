@@ -21,4 +21,34 @@ module.exports = defineConfig({
       }),
     ],
   },
+  chainWebpack: (config) => {
+    // 内置的svg处理排除指定目录下的文件
+    config.module
+      .rule("svg")
+      .exclude.add(path.resolve("src/assets/icons"))
+      .end();
+
+    config.module
+      .rule("svg-sprite-loader")
+      .test(/\.svg$/)
+      .include.add(path.resolve("src/assets/icons"))
+      .end()
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]",
+      })
+      .end();
+
+    config.module
+      .rule("svgo-loader")
+      .test(/\.svg$/)
+      .include.add(path.resolve("src/assets/icons"))
+      .end()
+      .use("svgo-loader")
+      .loader("svgo-loader")
+      .options({
+        removeAttrs: { attrs: "fill" },
+      });
+  },
 });
