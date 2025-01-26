@@ -2,7 +2,7 @@ const { defineConfig } = require("@vue/cli-service");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 // const webpackPluginSvgIcons = require("webpack-plugin-svg-icons/src");
 const path = require("path");
-
+const { VUE_APP_SERVE_URL } = process.env;
 module.exports = defineConfig({
   publicPath: "./",
   transpileDependencies: true,
@@ -52,5 +52,13 @@ module.exports = defineConfig({
       .options({
         removeAttrs: { attrs: "fill" },
       });
+  },
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    },
   },
 });

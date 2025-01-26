@@ -9,12 +9,14 @@
         class="relative my-8"
         placeholder="Username"
         iconName="user"
+        v-model="userName"
       />
       <LoginInput
         class="relative my-8"
         placeholder="Password"
         iconName="lock"
         type="password"
+        v-model="userPwd"
       />
     </div>
     <div v-show="!isLogin">
@@ -37,8 +39,13 @@
     <button
       type="submit"
       class="w-full h-12 bg-blue text-white rounded-lg cursor-pointer font-semibold shadow"
+      @click="
+        () => {
+          isLogin ? login() : regist();
+        }
+      "
     >
-      login
+      {{ isLogin ? "login" : "regist" }}
     </button>
     <div class="my-4">
       <a>or login with social platforms</a>
@@ -64,8 +71,29 @@
 <script setup lang="ts">
 import { computed, defineProps, ref } from "vue";
 import LoginInput from "@/components/LoginInput/index.vue";
+import { reqLogin } from "@/api/user";
+import toast from "@/lib/toast";
 
 const { socialIcons, isLogin } = defineProps(["socialIcons", "isLogin"]);
+
+const userName = ref("");
+const userPwd = ref("");
+// eslint-disable-next-line no-undef
+
+async function login() {
+  const res = await reqLogin({
+    userName: userName.value,
+    userPwd: userPwd.value,
+  });
+  console.log("res :", res);
+  if (res.code === 200) {
+    toast.info(res.msg);
+  } else {
+    toast.error(res.msg);
+  }
+}
+
+function regist() {}
 </script>
 
 <style lang="scss" scoped></style>
