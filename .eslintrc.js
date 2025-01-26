@@ -30,5 +30,6 @@ module.exports = {
       "warn",
       { blankLine: "always", prev: "*", next: "return" },
     ],
+    "vue/no-unused-vars": ["warn"],
   },
 };

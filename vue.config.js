@@ -1,5 +1,6 @@
 const { defineConfig } = require("@vue/cli-service");
 const StylelintPlugin = require("stylelint-webpack-plugin");
+// const webpackPluginSvgIcons = require("webpack-plugin-svg-icons/src");
 const path = require("path");
 
 module.exports = defineConfig({
@@ -19,6 +20,7 @@ module.exports = defineConfig({
         emitWarning: true, // 开发运行时抛出Warning提示
         emitErrors: true, // 开发运行时抛出Error提示
       }),
+      // new webpackPluginSvgIcons(),
     ],
   },
   chainWebpack: (config) => {
