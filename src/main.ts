@@ -8,6 +8,7 @@ import globalComp from "@/components";
 import { importAllSvgIcons } from "@/components";
 import "vue-toastification/dist/index.css";
 import { Toast, options } from "@/lib/toast";
+import "./permission";
 
 importAllSvgIcons();
 

@@ -56,6 +56,7 @@
         class="p-2.5 border-2 border-solid border-grey2 rounded-lg mr-6 cursor-pointer"
         v-for="(item, index) in socialIcons"
         :key="index"
+        @click="() => getUserInfo()"
       >
         <svg-icon
           :name="item.icon"
@@ -71,26 +72,26 @@
 <script setup lang="ts">
 import { computed, defineProps, ref } from "vue";
 import LoginInput from "@/components/LoginInput/index.vue";
-import { reqLogin } from "@/api/user";
-import toast from "@/lib/toast";
+import { useStore } from "vuex"; // 引入useStore 方法
+import { useRouter } from "vue-router";
 
+const store = useStore();
 const { socialIcons, isLogin } = defineProps(["socialIcons", "isLogin"]);
-
 const userName = ref("");
 const userPwd = ref("");
-// eslint-disable-next-line no-undef
+const router = useRouter();
 
 async function login() {
-  const res = await reqLogin({
+  const data = {
     userName: userName.value,
     userPwd: userPwd.value,
-  });
-  console.log("res :", res);
-  if (res.code === 200) {
-    toast.info(res.msg);
-  } else {
-    toast.error(res.msg);
-  }
+  };
+  const isLogin = await store.dispatch("login", data);
+  isLogin && router.push("/home");
+}
+
+function getUserInfo() {
+  store.dispatch("getUserInfo").catch((params) => {});
 }
 
 function regist() {}
