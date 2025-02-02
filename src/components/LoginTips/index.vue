@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineModel } from "vue";
+import { computed, defineProps, defineModel, inject, type Ref } from "vue";
 const { type } = defineProps(["type"]);
 const showLogin = computed(() => type === "log");
-const isLogin = defineModel();
+const isLogin = inject<Ref>("isLogin");
 
 function toggle() {
   isLogin.value = !isLogin.value;

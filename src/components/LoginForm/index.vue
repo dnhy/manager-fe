@@ -1,35 +1,56 @@
 <template>
-  <form action="" class="w-full">
+  <form
+    class="w-full"
+    @submit="
+      () => {
+        isLogin ? login() : regist();
+      }
+    "
+  >
     <h1 class="text-4xl">
       {{ isLogin ? "Login" : "Registration" }}
     </h1>
 
-    <div v-show="isLogin">
+    <div v-if="isLogin">
       <LoginInput
         class="relative my-8"
         placeholder="Username"
         iconName="user"
-        v-model="userName"
+        v-model="loginInfo.userName"
+        required
+        :min="3"
+        :max="10"
       />
       <LoginInput
         class="relative my-8"
         placeholder="Password"
         iconName="lock"
         type="password"
-        v-model="userPwd"
+        v-model="loginInfo.userPwd"
+        required
       />
     </div>
-    <div v-show="!isLogin">
+    <div v-if="!isLogin">
       <LoginInput
         class="relative my-8"
         placeholder="Username"
+        required
         iconName="user"
+        v-model="registInfo.userName"
       />
-      <LoginInput class="relative my-8" placeholder="Email" iconName="mail" />
+      <LoginInput
+        class="relative my-8"
+        placeholder="Email"
+        v-model="registInfo.userEmail"
+        iconName="mail"
+        required
+      />
       <LoginInput
         class="relative my-8"
         placeholder="Password"
+        v-model="registInfo.userPwd"
         iconName="lock"
+        required
         type="password"
       />
     </div>
@@ -39,11 +60,6 @@
     <button
       type="submit"
       class="w-full h-12 bg-blue text-white rounded-lg cursor-pointer font-semibold shadow"
-      @click="
-        () => {
-          isLogin ? login() : regist();
-        }
-      "
     >
       {{ isLogin ? "login" : "regist" }}
     </button>
@@ -70,31 +86,72 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref } from "vue";
+import {
+  computed,
+  defineProps,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  useTemplateRef,
+  defineModel,
+  inject,
+  type Ref,
+} from "vue";
 import LoginInput from "@/components/LoginInput/index.vue";
 import { useStore } from "vuex"; // 引入useStore 方法
 import { useRouter } from "vue-router";
+import { reqRegist } from "@/api/user";
+import toast from "@/lib/toast";
 
 const store = useStore();
-const { socialIcons, isLogin } = defineProps(["socialIcons", "isLogin"]);
-const userName = ref("");
-const userPwd = ref("");
+const { socialIcons } = defineProps(["socialIcons"]);
+const isLogin = inject<Ref>("isLogin");
+
+let loginInfo;
+
+let registInfo;
+
+function initData() {
+  loginInfo = reactive({
+    userName: "",
+    userPwd: "",
+  });
+
+  registInfo = reactive({
+    userName: "",
+    userPwd: "",
+    userEmail: "",
+  });
+}
+
+initData();
 const router = useRouter();
 
 async function login() {
-  const data = {
-    userName: userName.value,
-    userPwd: userPwd.value,
-  };
-  const isLogin = await store.dispatch("login", data);
-  isLogin && router.push("/home");
+  const data = toRaw(loginInfo);
+  const res = await store.dispatch("login", data);
+  res && router.push("/home");
+}
+
+async function regist() {
+  const data = toRaw(registInfo);
+  const res = await reqRegist(data);
+  if (res.code === 200) {
+    toast.info(res.msg);
+    const temp = registInfo.userName;
+    // 清空数据
+    initData();
+    loginInfo.userName = temp;
+    isLogin.value = true;
+  } else {
+    toast.error(res.msg);
+  }
 }
 
 function getUserInfo() {
   store.dispatch("getUserInfo").catch((params) => {});
 }
-
-function regist() {}
 </script>
 
 <style lang="scss" scoped></style>

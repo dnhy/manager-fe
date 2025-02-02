@@ -1,11 +1,28 @@
 <template>
   <div>
     <input
+      ref="input"
       class="login-input"
-      :type="type"
+      :type="inputType"
       :placeholder="placeholder"
-      v-model="value"
+      v-model.trim="value"
+      :required="required"
+      @invalid="handleInvalid"
+      @input="inputHandle"
+      @mouseenter="showEye = true"
+      @mouseleave="showEye = false"
     />
+    <svg-icon
+      v-if="showEye && type === 'password'"
+      class="eye-icon"
+      :name="pwdEye"
+      color="#7D7D7D"
+      width="20px"
+      height="20px"
+      @click="changeEye"
+      @mouseenter="showEye = true"
+      @mouseleave="showEye = false"
+    ></svg-icon>
     <svg-icon
       v-if="iconName"
       class="input-icon"
@@ -18,11 +35,18 @@
 </template>
 
 <script setup lang="ts">
-import { defineModel, defineProps } from "vue";
+import {
+  computed,
+  defineModel,
+  defineProps,
+  onMounted,
+  ref,
+  useTemplateRef,
+} from "vue";
 
 let value = defineModel();
 
-const { placeholder, iconName, type } = defineProps({
+const { placeholder, iconName, type, required, min, max } = defineProps({
   placeholder: {
     type: String,
     default: "Please input something...",
@@ -34,7 +58,52 @@ const { placeholder, iconName, type } = defineProps({
     type: String,
     default: "text",
   },
+  required: {
+    type: Boolean,
+    default: false,
+  },
+
+  min: {
+    type: Number,
+    default: null,
+  },
+  max: {
+    type: Number,
+    default: null,
+  },
 });
+
+const pwdEye = ref("eye-close");
+const showEye = ref(false);
+
+const inputType = computed(() => (pwdEye.value === "eye-open" ? "text" : type));
+
+function changeEye() {
+  pwdEye.value = pwdEye.value === "eye-close" ? "eye-open" : "eye-close";
+}
+
+// TODO:input组件校验
+function handleInvalid(e) {
+  if (required && e.target.value === "") {
+    e.target.setCustomValidity(`The ${placeholder.toLowerCase()} is needed.`);
+
+    return;
+  }
+}
+
+function inputHandle(e) {
+  e.target.setCustomValidity("");
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.required-indicator {
+  color: red;
+  margin-left: 4px;
+}
+
+.required-text {
+  color: red;
+  margin-left: 4px;
+}
+</style>
