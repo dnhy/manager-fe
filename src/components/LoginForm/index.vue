@@ -18,8 +18,6 @@
         iconName="user"
         v-model="loginInfo.userName"
         required
-        :min="3"
-        :max="10"
       />
       <LoginInput
         class="relative my-8"
@@ -37,12 +35,18 @@
         required
         iconName="user"
         v-model="registInfo.userName"
+        :maxlength="10"
+        :validation="{
+          pattern: '^.{2,10}$',
+          title: 'You can only enter 2-10 characters',
+        }"
       />
       <LoginInput
         class="relative my-8"
         placeholder="Email"
         v-model="registInfo.userEmail"
         iconName="mail"
+        type="email"
         required
       />
       <LoginInput

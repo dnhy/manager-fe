@@ -11,6 +11,9 @@
       @input="inputHandle"
       @mouseenter="showEye = true"
       @mouseleave="showEye = false"
+      :pattern="validation?.pattern"
+      :title="validation?.title"
+      :maxlength="maxlength"
     />
     <svg-icon
       v-if="showEye && type === 'password'"
@@ -46,32 +49,30 @@ import {
 
 let value = defineModel();
 
-const { placeholder, iconName, type, required, min, max } = defineProps({
-  placeholder: {
-    type: String,
-    default: "Please input something...",
-  },
-  iconName: {
-    type: String,
-  },
-  type: {
-    type: String,
-    default: "text",
-  },
-  required: {
-    type: Boolean,
-    default: false,
-  },
-
-  min: {
-    type: Number,
-    default: null,
-  },
-  max: {
-    type: Number,
-    default: null,
-  },
-});
+const { placeholder, iconName, type, required, validation, maxlength } =
+  defineProps({
+    placeholder: {
+      type: String,
+      default: "Please input something...",
+    },
+    iconName: {
+      type: String,
+    },
+    type: {
+      type: String,
+      default: "text",
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    maxlength: {
+      type: Number,
+    },
+    validation: {
+      type: Object,
+    },
+  });
 
 const pwdEye = ref("eye-close");
 const showEye = ref(false);
@@ -82,7 +83,6 @@ function changeEye() {
   pwdEye.value = pwdEye.value === "eye-close" ? "eye-open" : "eye-close";
 }
 
-// TODO:input组件校验
 function handleInvalid(e) {
   if (required && e.target.value === "") {
     e.target.setCustomValidity(`The ${placeholder.toLowerCase()} is needed.`);
