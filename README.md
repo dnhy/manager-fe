@@ -1,25 +1,13 @@
-# vue-project-main
-vue3 + webpack + elementplus标准项目框架
+1.前后端上线服务器 ok
 
-## Project setup
-```
-pnpm install
-```
+2.退出登录
 
-### Compiles and hot-reloads for development
-```
-pnpm run serve
-```
+3.找回密码，发送邮箱验证码
 
-### Compiles and minifies for production
-```
-pnpm run build
-```
+4.第三方社交平台登录
 
-### Lints and fixes files
-```
-pnpm run lint
-```
+5.登录页响应式布局
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+6.国际化
+
+7.使用history路由

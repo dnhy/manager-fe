@@ -1,7 +1,7 @@
 <template>
   <form
     class="w-full"
-    @submit="
+    @submit.prevent="
       () => {
         isLogin ? login() : regist();
       }
@@ -104,7 +104,7 @@ import {
 } from "vue";
 import LoginInput from "@/components/LoginInput/index.vue";
 import { useStore } from "vuex"; // 引入useStore 方法
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { reqRegist } from "@/api/user";
 import toast from "@/lib/toast";
 
@@ -130,12 +130,15 @@ function initData() {
 }
 
 initData();
-const router = useRouter();
+const $router = useRouter();
+const $route = useRoute();
 
 async function login() {
+  const redirect: any = $route.query.redirect;
+
   const data = toRaw(loginInfo);
-  const res = await store.dispatch("login", data);
-  res && router.push("/home");
+  await store.dispatch("login", data);
+  $router.push(redirect || "/home");
 }
 
 async function regist() {

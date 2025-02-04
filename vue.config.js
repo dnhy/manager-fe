@@ -2,7 +2,7 @@ const { defineConfig } = require("@vue/cli-service");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 // const webpackPluginSvgIcons = require("webpack-plugin-svg-icons/src");
 const path = require("path");
-const { VUE_APP_SERVE_URL } = process.env;
+const { VUE_APP_BASE_API, VUE_APP_SERVE_URL } = process.env;
 module.exports = defineConfig({
   publicPath: "./",
   transpileDependencies: true,
@@ -55,8 +55,8 @@ module.exports = defineConfig({
   },
   devServer: {
     proxy: {
-      "/api": {
-        target: "http://localhost:3000",
+      [VUE_APP_BASE_API]: {
+        target: VUE_APP_SERVE_URL,
         changeOrigin: true,
         pathRewrite: { "^/api": "" },
       },

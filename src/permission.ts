@@ -1,12 +1,12 @@
 import router from "./router";
 import store from "./store/index";
-console.log(store);
-const { token, userInfo } = store.state.userModule;
 
 router.beforeEach(async (to, from, next) => {
+  const { token, userInfo } = store.state.userModule;
+
   if (token) {
     if (to.path === "/login") {
-      next();
+      next({ path: "/" });
     } else {
       if (userInfo.userName) {
         next();
@@ -15,7 +15,6 @@ router.beforeEach(async (to, from, next) => {
           await store.dispatch("getUserInfo");
           next();
         } catch (error) {
-          console.log("error :", error);
           next({
             path: "/login",
             query: {
@@ -24,6 +23,17 @@ router.beforeEach(async (to, from, next) => {
           });
         }
       }
+    }
+  } else {
+    if (to.path === "/login") {
+      next();
+    } else {
+      next({
+        path: "/login",
+        query: {
+          redirect: to.path,
+        },
+      });
     }
   }
 });
