@@ -104,13 +104,16 @@ import {
 } from "vue";
 import LoginInput from "@/components/LoginInput/index.vue";
 import { useStore } from "vuex"; // 引入useStore 方法
-import { useRoute, useRouter } from "vue-router";
-import { reqRegist } from "@/api/user";
+import { reqRegist, reqUserInfo2 } from "@/api/user";
 import toast from "@/lib/toast";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
 const { socialIcons } = defineProps(["socialIcons"]);
 const isLogin = inject<Ref>("isLogin");
+
+const $router = useRouter();
+const $route = useRoute();
 
 let loginInfo;
 
@@ -130,15 +133,13 @@ function initData() {
 }
 
 initData();
-const $router = useRouter();
-const $route = useRoute();
 
 async function login() {
-  const redirect: any = $route.query.redirect;
-
   const data = toRaw(loginInfo);
   await store.dispatch("login", data);
-  $router.push(redirect || "/home");
+
+  const redirect = $route.query.redirect as string;
+  $router.push(redirect || "/");
 }
 
 async function regist() {
@@ -158,6 +159,8 @@ async function regist() {
 
 function getUserInfo() {
   store.dispatch("getUserInfo").catch((params) => {});
+
+  reqUserInfo2();
 }
 </script>
 
