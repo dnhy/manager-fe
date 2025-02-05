@@ -7,9 +7,22 @@ import {
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("../views/login/index.vue"),
+    path: "/loginrl",
+    name: "loginrl",
+    component: () => import("../layout/loginRL.vue"),
+    redirect: "login",
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: () => import("../views/login/index.vue"),
+      },
+      {
+        path: "forgotpwd",
+        name: "forgotpwd",
+        component: () => import("../views/forgotpwd/index.vue"),
+      },
+    ],
   },
   {
     path: "/home",

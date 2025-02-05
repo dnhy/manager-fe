@@ -5,7 +5,7 @@ router.beforeEach(async (to, from, next) => {
   const { token, userInfo } = store.state.userModule;
 
   if (token) {
-    if (to.path === "/login") {
+    if (to.path.startsWith("/loginrl")) {
       next({ path: "/" });
     } else {
       if (userInfo.userName) {
@@ -16,7 +16,7 @@ router.beforeEach(async (to, from, next) => {
           next();
         } catch (error) {
           next({
-            path: "/login",
+            path: "/loginrl/login",
             query: {
               redirect: to.path,
             },
@@ -25,11 +25,11 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (to.path === "/login") {
+    if (to.path.startsWith("/loginrl")) {
       next();
     } else {
       next({
-        path: "/login",
+        path: "/loginrl/login",
         query: {
           redirect: to.path,
         },

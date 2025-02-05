@@ -59,14 +59,13 @@
       />
     </div>
     <div class="-mt-4 mb-4">
-      <a href="">Forgot Password?</a>
+      <router-link to="forgotpwd">Forgot Password?</router-link>
     </div>
-    <button
-      type="submit"
-      class="w-full h-12 bg-blue text-white rounded-lg cursor-pointer font-semibold shadow"
-    >
+
+    <LoginButton type="submit" class="w-full">
       {{ isLogin ? "login" : "regist" }}
-    </button>
+    </LoginButton>
+
     <div class="my-4">
       <a>or login with social platforms</a>
     </div>
@@ -103,6 +102,7 @@ import {
   type Ref,
 } from "vue";
 import LoginInput from "@/components/LoginInput/index.vue";
+import LoginButton from "@/components/LoginButton/index.vue";
 import { useStore } from "vuex"; // 引入useStore 方法
 import { reqRegist, reqUserInfo2 } from "@/api/user";
 import toast from "@/lib/toast";

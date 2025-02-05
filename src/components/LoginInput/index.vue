@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <input
       ref="input"
       class="login-input"
