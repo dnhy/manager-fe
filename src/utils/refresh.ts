@@ -1,4 +1,5 @@
 let refreshTokenPromise = null;
+let count = 10;
 
 export function refreshToken(reqFun, refreshFn, logoutFn) {
   if (!refreshTokenPromise) {
@@ -11,7 +12,11 @@ export function refreshToken(reqFun, refreshFn, logoutFn) {
   }
   //   重新调用接口
   refreshTokenPromise.then(async () => {
+    if (count <= 0) {
+      return Promise.reject("失败次数过多");
+    }
     try {
+      count--;
       const response = await reqFun();
 
       return response.json();

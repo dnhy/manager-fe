@@ -32,7 +32,7 @@ const myFetch = {
     const reqFun = () => {
       return fetch(VUE_APP_BASE_API + url, {
         headers: {
-          Authorization: "Bearer " + store.state.userModule.token,
+          Authorization: "Bearer " + store.state.user.token,
           ...headers,
         },
       });

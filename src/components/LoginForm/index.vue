@@ -18,7 +18,9 @@
         iconName="user"
         v-model="loginInfo.userName"
         required
+        ref="username"
       />
+      <input type="text" ref="testInput" />
       <LoginInput
         class="relative my-8"
         placeholder="Password"
@@ -86,6 +88,7 @@
       </div>
     </div>
   </form>
+  <User ref="user" />
 </template>
 
 <script setup lang="ts">
@@ -107,6 +110,19 @@ import { useStore } from "vuex"; // 引入useStore 方法
 import { reqRegist, reqUserInfo2 } from "@/api/user";
 import toast from "@/lib/toast";
 import { useRoute, useRouter } from "vue-router";
+import User from "./user.vue";
+
+const username = ref();
+const user = ref();
+
+const testInput = ref();
+onMounted(() => {
+  console.log(user.value);
+  console.log(testInput.value);
+  testInput.value.focus();
+
+  console.log(user.value.a);
+});
 
 const store = useStore();
 const { socialIcons } = defineProps(["socialIcons"]);

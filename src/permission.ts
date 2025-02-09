@@ -2,7 +2,7 @@ import router from "./router";
 import store from "./store/index";
 
 router.beforeEach(async (to, from, next) => {
-  const { token, userInfo } = store.state.userModule;
+  const { token, userInfo } = store.state.user;
 
   if (token) {
     if (to.path.startsWith("/loginrl")) {
