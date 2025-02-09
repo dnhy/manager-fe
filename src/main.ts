@@ -18,3 +18,5 @@ createApp(App)
   .use(globalComp)
   .use(Toast, options)
   .mount("#app");
+
+console.log("test123");
