@@ -19,5 +19,5 @@ createApp(App)
   .use(Toast, options)
   .mount("#app");
 
-console.log("hello world");
+console.log("hello world!!!!!!!");
 console.log("develop continue");
