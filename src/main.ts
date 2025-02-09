@@ -19,4 +19,4 @@ createApp(App)
   .use(Toast, options)
   .mount("#app");
 
-console.log("test123");
+console.log("hello world");
